@@ -1,5 +1,6 @@
 import 'package:favo_statenotifier_freezed/dammy_data/list_data.dart';
 import 'package:favo_statenotifier_freezed/entities/contents.dart';
+import 'package:favo_statenotifier_freezed/pages/detail_page.dart';
 import 'package:favo_statenotifier_freezed/pages/favo_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,29 +28,40 @@ class FavoWidget extends HookConsumerWidget {
             shrinkWrap: true,
             itemCount: dammyList.length,
             itemBuilder: (BuildContext context, int index) {
-              return Card(
-                child: SizedBox(
-                  height: size.height * 0.1,
-                  child: Row(children: [
-                    SizedBox(
-                      width: size.width * 0.8,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(_isFavoList[index].title.toString()),
+              return InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DetailPage(
+                                title: _isFavoList[index].title,
+                                index: index,
+                              )));
+                },
+                child: Card(
+                  child: SizedBox(
+                    height: size.height * 0.1,
+                    child: Row(children: [
+                      SizedBox(
+                        width: size.width * 0.8,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(_isFavoList[index].title.toString()),
+                        ),
                       ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        ref
-                            .read(favoProvider.notifier)
-                            .favoriteChange(data: _isFavoList, index: index);
-                      },
-                      icon: Icon(Icons.favorite,
-                          color: _isFavoList[index].isFavo == true
-                              ? Colors.red
-                              : Colors.grey),
-                    ),
-                  ]),
+                      IconButton(
+                        onPressed: () {
+                          ref
+                              .read(favoProvider.notifier)
+                              .favoriteChange(data: _isFavoList, index: index);
+                        },
+                        icon: Icon(Icons.favorite,
+                            color: _isFavoList[index].isFavo == true
+                                ? Colors.red
+                                : Colors.grey),
+                      ),
+                    ]),
+                  ),
                 ),
               );
             }),
